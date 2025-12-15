@@ -10,5 +10,5 @@ COPY . .
 # Azure uses PORT env variable
 ENV PORT=8000
 
-# Start with gunicorn (REQUIRED)
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "app.app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app.app:app"]
+

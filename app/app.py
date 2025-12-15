@@ -1,17 +1,26 @@
+import sys
 import os
+
+# Add project root to PYTHONPATH
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(ROOT_DIR)
+
 from flask import Flask, request, jsonify
 from src.predict import predict_medicine
 
-APP_VERSION = "v3"
-
 app = Flask(__name__)
+
+APP_VERSION = "v3"   # 👈 version marker for auto-deploy verification
 
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({
-        "service": "MedCare MLOps API",
-        "status": "RUNNING",
-        "version": APP_VERSION
+        "message": "MedCare MLOps API running",
+        "version": APP_VERSION,
+        "endpoints": {
+            "health": "/health",
+            "predict": "/predict (POST)"
+        }
     })
 
 @app.route("/health", methods=["GET"])
@@ -19,7 +28,7 @@ def health():
     return jsonify({
         "status": "UP",
         "version": APP_VERSION
-    })
+    }), 200
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -28,5 +37,4 @@ def predict():
         return jsonify({"error": "Please provide disease name"}), 400
 
     result = predict_medicine(data["disease"])
-    result["version"] = APP_VERSION
-    return jsonify(result)
+    return jsonify(result), 200
