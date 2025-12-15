@@ -26,10 +26,11 @@ def home():
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({
+        "message": "MedCare API v2.1 deployed successfully",
         "status": "UP",
-        "version": "2.0",
-        "message": "MedCare API v2 deployed successfully"
+        "version": "2.1"
     }), 200
+
 
 
 @app.route("/predict", methods=["POST"])
