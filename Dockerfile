@@ -1,18 +1,14 @@
-# Base image
 FROM python:3.10-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy requirements and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project
 COPY . .
 
-# Expose Flask port
-EXPOSE 5000
+# Azure uses PORT env variable
+ENV PORT=8000
 
-# Run the Flask application
-CMD ["python", "app/app.py"]
+# Start with gunicorn (REQUIRED)
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "app.app:app"]
