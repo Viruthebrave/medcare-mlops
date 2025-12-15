@@ -8,28 +8,32 @@ sys.path.append(ROOT_DIR)
 from flask import Flask, request, jsonify
 from src.predict import predict_medicine
 
+# ✅ VERSION IDENTIFIER (USED TO VERIFY AUTO DEPLOY)
+APP_VERSION = "v2"
+
 app = Flask(__name__)
 
-# ✅ ROOT ROUTE (FIXES 404 ISSUE)
+# ✅ ROOT ROUTE
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({
         "message": "MedCare MLOps API is running successfully",
+        "version": APP_VERSION,
         "available_endpoints": {
             "health_check": "/health",
             "prediction": "/predict (POST)"
         }
     })
 
+# ✅ HEALTH CHECK (THIS IS YOUR DEPLOYMENT PROOF)
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({
         "status": "UP",
-        "version": "v2-cd-test",
-        "message": "GitHub → Azure auto-deploy working 🚀"
+        "version": APP_VERSION
     }), 200
 
-
+# ✅ PREDICTION API
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.get_json()
