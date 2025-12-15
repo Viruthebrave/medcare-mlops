@@ -2,20 +2,24 @@ name: Docker Build CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  docker-build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+    - name: Login to ACR
+      uses: azure/docker-login@v1
+      with:
+        login-server: medcareviru25.azurecr.io
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build Docker image
-        run: docker build -t medcare-mlops:ci .
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t medcareviru25.azurecr.io/medcare-mlops:latest .
+        docker push medcareviru25.azurecr.io/medcare-mlops:latest
