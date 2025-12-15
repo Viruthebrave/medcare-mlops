@@ -10,7 +10,7 @@ from src.predict import predict_medicine
 
 app = Flask(__name__)
 
-APP_VERSION = "v3"   # 👈 version marker for auto-deploy verification
+APP_VERSION = "2.1"
 
 @app.route("/", methods=["GET"])
 def home():
@@ -26,12 +26,10 @@ def home():
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({
-        "message": "MedCare API v2.1 deployed successfully",
+        "message": f"MedCare API v{APP_VERSION} deployed successfully",
         "status": "UP",
-        "version": "2.1"
+        "version": APP_VERSION
     }), 200
-
-
 
 @app.route("/predict", methods=["POST"])
 def predict():
