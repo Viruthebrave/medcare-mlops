@@ -23,7 +23,12 @@ def home():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "UP"}), 200
+    return jsonify({
+        "status": "UP",
+        "version": "v2-cd-test",
+        "message": "GitHub → Azure auto-deploy working 🚀"
+    }), 200
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
