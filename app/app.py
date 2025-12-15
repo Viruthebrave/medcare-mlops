@@ -27,8 +27,10 @@ def home():
 def health():
     return jsonify({
         "status": "UP",
-        "version": APP_VERSION
+        "version": "2.0",
+        "message": "MedCare API v2 deployed successfully"
     }), 200
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
